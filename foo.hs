@@ -7,7 +7,7 @@ import Vivid
 import Music
 import WesternNotation
 
-foo = sd (74 ::I "note", 0.1 ::I "amp") $ do
+mySynth = sd (74 ::I "note", 0.1 ::I "amp") $ do
    -- '~*' are math operators, and their precedence is like in
    -- math (~* binds more tightly than ~+, etc):
    s <- sinOsc (freq_ $ midiCPS (A::A "note") ~+ 100 ~* sinOsc (freq_ 30))
@@ -28,15 +28,22 @@ foo = sd (74 ::I "note", 0.1 ::I "amp") $ do
 -- lfTri (freq_ x, iphase_ y)
 
 
---this is totally broken, but the last piece to making a reasonable euterpa 2.0
-playMusic s m =
-  forM_ (toList m) $ \note -> do
-    sleep (getDur $ snd note)
-    set s (fromInteger . getP $ snd note::I "note")
+song = Music.cycle . Music.line $ map (SoundUnit. (uncurry Note)) [((C,4), 1), ((D,4), 2), ((E,4), 3)]
 
-song = Music.cycle . Music.line $ map SoundUnit [Note (C,4) 0.1, Note (D,4) 0.4, Note (E,4) 0.1]
+-- | use a lines::Music -> [Music] then make a synth on each Muisc
+--   each synth can then play notes sequentially
+--   for now, we make a new synth for every note
+playLine mySynth musicalLine = do
+  s <- synth mySynth ()
+  forM_ musicalLine $ \note -> do
+    set s (fromInteger $ getPitch note::I "note")
+    sleep (getDur note)
+  free s
+
+playMusic mySynth m =
+  let ml = map snd $ toList m
+  in playLine mySynth ml
 
 main = do
-   s <- synth foo ()
-   playMusic s song
-   free s
+  playMusic mySynth song
+  return ()

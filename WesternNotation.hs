@@ -2,13 +2,13 @@
 
 module WesternNotation where
 
-  import Music
+  import Tile
   data WesternNotation =
        Note Pitch Duration
     |  Rest Duration
     deriving (Show)
 
-  instance Vividable WesternNotation where
+  instance Tileable WesternNotation where
     toFreq a = undefined
     silentUnit = Rest 0
     getDur = \case
@@ -32,9 +32,9 @@ module WesternNotation where
 
   midiPitch :: Pitch -> MidiPitch
   midiPitch (pc,oct)  = 12*(oct+1) + pcToInt pc
-  getP :: WesternNotation -> MidiPitch
-  getP (Note p d) = midiPitch p
-  getP (Rest d) = 0
+  getPitch :: WesternNotation -> MidiPitch
+  getPitch (Note p d) = midiPitch p
+  getPitch (Rest d) = 0
 
   pcToInt     :: PitchClass -> Integer
   pcToInt pc  = case pc of
