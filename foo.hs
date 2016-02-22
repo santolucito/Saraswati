@@ -40,6 +40,7 @@ playLine mySynth musicalLine = do
     sleep (getDur note)
   free s
 
+-- | both playMusic and playLine belong in Tiles.hs
 playMusic mySynth m =
   let ml = map snd $ toList m
   in playLine mySynth ml
