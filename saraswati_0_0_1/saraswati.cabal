@@ -1,0 +1,28 @@
+name:                saraswati
+version:             0.0.1.0
+synopsis:            Abstract Media Rep
+description:
+  Based on Euterpea
+author:              Mark Santolucito
+maintainer:          Mark Santolucito
+category:            Audio, Music, Sound
+build-type:          Simple
+cabal-version:       >=1.8
+stability:           experimental
+license:             GPL
+
+library
+  exposed-modules:
+      Saraswati
+    , Saraswati.Music.Render
+    , Saraswati.Music.WesternNotation
+    , Saraswati.Medias
+  -- other-modules:
+  build-depends:
+
+        base > 3 && < 5
+      , async > 2
+      , vivid >= 0.1
+
+  ghc-options:
+    -O2
