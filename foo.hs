@@ -6,12 +6,12 @@
 import Vivid
 import Saraswati
 
-song = horizontal $ map (MediaUnit. uncurry Note)
+song = horizontal $ map (TemporalUnit. uncurry Note)
   [((C,5), 0.25), ((D,5), 0.25), ((E,5), 0.5), ((C,5), 0.25), ((D,5), 0.25), ((E,5), 0.5),
    ((E,5), 0.25), ((F,5), 0.25), ((E,5), 0.25), ((D,5), 0.25), ((C,5), 0.5), ((G,4), 0.5)]
 
 main = do
   --installHandler sigINT (\s -> (print "hi"))
-  renderMedia (song :=: song)
+  renderMedia (song :=: transpose 3 song)
   wait 10000
   return ()

@@ -8,13 +8,13 @@ module Saraswati.Music.Render
     ) where
 
 import Vivid
-import Saraswati.Medias
+import Saraswati.TemporalMedia
 import qualified Saraswati.Music.Rep as R
 import Saraswati.Music.WesternNotation
 
 import Control.Concurrent.Async (mapConcurrently)
 
-instance Mediable WesternNotation where
+instance Temporable WesternNotation where
   emptyUnit = Rest 0
   getDur = \case
     Note _ d -> d
@@ -23,8 +23,8 @@ instance Mediable WesternNotation where
 
 playMusic ::
   (Elem "note" sdArgs, Elem "amp" sdArgs,
-   Show a, Mediable a, R.PitchedMusic a) =>
-  SynthDef sdArgs -> Media a -> IO()
+   Show a, Temporable a, R.PitchedMusic a) =>
+  SynthDef sdArgs -> Temporal a -> IO()
 playMusic mySynth m =
   let
     vs =  toVoices (toList m) [[]]
@@ -32,7 +32,7 @@ playMusic mySynth m =
   in do
     mapConcurrently (playLine mySynth) vs'
     return ()
-    
+
 -- | use a lines::Music -> [Music] then make a synth on each Muisc
 --   each synth can then play notes sequentially
 --   for now, we make a new synth for every note
@@ -57,6 +57,6 @@ silence s space = do
 -- | the defaultSynth used for generic renderMedia
 --   can be replaced if using the more advanced playMusic
 defaultSynth = sd (74 ::I "note", 1 ::I "amp") $ do
-  s <- sinOsc (freq_ $ midiCPS (V::V "note") ~+ 100 ~* sinOsc (freq_ 30))
-  s2 <- s ~* lfTri (freq_ 30) ~* (V::V "amp")
+  s <- sinOsc (freq_ $ midiCPS (V::V "note"))
+  s2 <- s ~* (V::V "amp")
   out 0 [s2,s2] -- each list element represents an audio out channel

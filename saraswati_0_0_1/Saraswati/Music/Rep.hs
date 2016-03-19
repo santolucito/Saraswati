@@ -7,3 +7,6 @@ class PitchedMusic a where
 
 instance PitchedMusic WesternNotation where
   getPitch = Saraswati.Music.WesternNotation.getPitch
+
+{-instance PitchedMusic OtherNotation where
+  getPitch = Saraswati.Music.OtherNotation.getPitch-}

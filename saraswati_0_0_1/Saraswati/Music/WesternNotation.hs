@@ -2,7 +2,7 @@
 
 module Saraswati.Music.WesternNotation where
 
-import Saraswati.Medias
+import Saraswati.TemporalMedia
 
 data WesternNotation =
      Note Pitch Duration
@@ -44,8 +44,13 @@ pitch ap  =
     let (oct, n) = divMod ap 12
     in  ([C,Cs,D,Ds,E,F,Fs,G,Gs,As,B] !! fromInteger n, oct-1)
 
-transpose      :: Integer -> Pitch -> Pitch
-transpose i p  = pitch (midiPitch p + i)
+-- | any functions avaible to the end user should be over Temporal
+transpose     :: Integer -> Temporal WesternNotation -> Temporal WesternNotation
+transpose i  =
+  let
+    transpose' i p = pitch (midiPitch p + i)
+  in
+    fmap $ changePitch (transpose' i)
 
 changePitch  :: (Pitch -> Pitch) -> (WesternNotation -> WesternNotation)
 changePitch  f (Note p d)    = Note (f p) d

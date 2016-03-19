@@ -16,7 +16,7 @@ library
       Saraswati
     , Saraswati.Music.Render
     , Saraswati.Music.WesternNotation
-    , Saraswati.Medias
+    , Saraswati.TemporalMedia
   -- other-modules:
   build-depends:
 

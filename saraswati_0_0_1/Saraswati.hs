@@ -1,9 +1,9 @@
 module Saraswati
-    ( module Saraswati.Medias,
+    ( module Saraswati.TemporalMedia,
       module Saraswati.Music.WesternNotation,
       playMusic
     ) where
 
-import Saraswati.Medias
+import Saraswati.TemporalMedia
 import Saraswati.Music.WesternNotation
 import Saraswati.Music.Render
